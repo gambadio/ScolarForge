@@ -185,10 +185,8 @@ class ClaudeApp(tk.Tk):
     def load_settings(self):
         settings = self.file_handler.load_all_settings()
         for key, value in settings.items():
-            if key == 'internet_sources':
-                self.internet_sources = value
-            elif key == 'perplexity_api_key':
-                self.perplexity_api_key = value
+            if key in ['scripts', 'instructions', 'internet_sources']:
+                setattr(self, key, value)
             else:
                 setattr(self, key, value)
 

@@ -290,6 +290,7 @@ class ScriptsWindow(BaseWindow):
                     self.parent.scripts[index + direction], self.parent.scripts[index]
                 self.update_listbox()
                 self.scripts_listbox.select_set(index + direction)
+                self.parent.file_handler.save_script_texts(self.parent)
 
     def delete_selected(self):
         selection = self.scripts_listbox.curselection()
@@ -357,6 +358,7 @@ class InstructionsWindow(BaseWindow):
                     self.parent.instructions[index + direction], self.parent.instructions[index]
                 self.update_listbox()
                 self.instructions_listbox.select_set(index + direction)
+                self.parent.file_handler.save_instruction_texts(self.parent)  # Add this line
 
     def delete_selected(self):
         selection = self.instructions_listbox.curselection()
@@ -417,6 +419,7 @@ class InternetSourcesWindow(BaseWindow):
                     self.parent.internet_sources[index + direction], self.parent.internet_sources[index]
                 self.update_listbox()
                 self.internet_listbox.select_set(index + direction)
+                self.parent.file_handler.save_internet_sources(self.parent)  # Add this line
 
     def delete_selected(self):
         selection = self.internet_listbox.curselection()

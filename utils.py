@@ -79,14 +79,14 @@ class FileHandler:
     def save_internet_sources(self, parent):
         try:
             with open('internet_sources.json', 'w') as f:
-                json.dump(parent.internet_sources, f)
+                json.dump(parent.internet_sources, f, indent=2)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving internet sources: {e}")
 
     def save_texts(self, texts, filename):
         try:
             with open(filename, 'w') as f:
-                json.dump(texts, f)
+                json.dump(texts, f, indent=2)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving texts: {e}")
 
@@ -96,12 +96,25 @@ class FileHandler:
                 settings = json.load(f)
         except FileNotFoundError:
             settings = {}
+        
+        try:
+            with open('script_texts.json', 'r') as f:
+                settings['scripts'] = json.load(f)
+        except FileNotFoundError:
+            settings['scripts'] = []
+        
+        try:
+            with open('instruction_texts.json', 'r') as f:
+                settings['instructions'] = json.load(f)
+        except FileNotFoundError:
+            settings['instructions'] = []
+        
         try:
             with open('internet_sources.json', 'r') as f:
-                internet_sources = json.load(f)
-                settings['internet_sources'] = internet_sources
+                settings['internet_sources'] = json.load(f)
         except FileNotFoundError:
             settings['internet_sources'] = []
+        
         return settings
 
     def save_all_settings(self, parent):
