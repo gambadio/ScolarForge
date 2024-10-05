@@ -1,6 +1,8 @@
 # internet_search.py
 
 import json
+import re
+import logging
 import requests
 from typing import List, Dict
 from datetime import datetime
@@ -12,8 +14,26 @@ class InternetSearch:
 
     def generate_search_terms(self, instructions: List[str], scripts: List[str]) -> List[Dict]:
         claude_prompt = self._create_claude_prompt(instructions, scripts)
-        search_terms = self._call_claude_api(claude_prompt)
-        return json.loads(search_terms)
+        search_terms_raw = self._call_claude_api(claude_prompt)
+        
+        # Save the raw response to a JSON file
+        with open('searchterms.json', 'w', encoding='utf-8') as f:
+            json.dump({"raw_response": search_terms_raw}, f, ensure_ascii=False, indent=2)
+        
+        # Try to extract JSON from the response
+        json_match = re.search(r'\[.*\]', search_terms_raw, re.DOTALL)
+        if json_match:
+            json_str = json_match.group(0)
+        else:
+            json_str = search_terms_raw  # If no JSON-like structure found, use the whole response
+        
+        
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError as e:
+            logging.error(f"Failed to parse JSON: {e}")
+            logging.error(f"Raw content: {search_terms_raw}")
+            return []  # Return an empty list if parsing fails
 
     def perform_internet_search(self, search_terms: List[Dict]) -> List[Dict]:
         results = []
@@ -26,7 +46,7 @@ class InternetSearch:
     def _create_claude_prompt(self, instructions: List[str], scripts: List[str]) -> str:
         return f"""
         Based on the following instructions and scripts, create a list of 5 possible search terms for internet research.
-        Format the output as a JSON list of dictionaries, each containing 'search_term' and 'goal' keys.
+        Format the output as a JSON list of dictionaries, each containing 'search_term' and 'goal' keys. Do not include any explanatory text before or after the JSON. I REPEAT DO NOT WRITE ANYTHING ELSE THAN THE OUTPUT. 
 
         Instructions:
         {' '.join(instructions)}

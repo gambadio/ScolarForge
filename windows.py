@@ -53,6 +53,11 @@ class AutomaticInternetSearchWindow(BaseWindow):
             [script[1] for script in self.parent.scripts]
         )
 
+        if not search_terms:
+            messagebox.showinfo("Info", "Failed to generate valid search terms. Please check searchterms.json for the raw API response.")
+            self.run_button.config(state=tk.NORMAL)
+            return
+
         for i, term in enumerate(search_terms, 1):
             self.progress_var.set(f"Searching term {i} of {len(search_terms)}: {term['search_term']}")
             self.update_idletasks()
