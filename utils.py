@@ -91,6 +91,21 @@ class FileHandler:
         except Exception as e:
             messagebox.showerror("Error", f"Error saving texts: {e}")
 
+    def format_internet_search_results(self, internet_search_results):
+        formatted_results = []
+        for i, result in enumerate(internet_search_results):
+            formatted_results.append(
+                f"Internet Search Result {i+1} (Title: {result.get('title', 'Unknown')}, URL: {result.get('url', 'unknown')}, Author: {result.get('author', 'Unknown')}, Date Retrieved: {result.get('date_retrieved', 'N/A')}):\n{result.get('content', 'No content available')}\n!!!this is the next document!!!"
+            )
+        return "\n\n".join(formatted_results)
+
+    def save_internet_search_results(self, parent):
+        try:
+            with open('internet_search_results.json', 'w') as f:
+                json.dump(parent.internet_search_results, f, indent=2)
+        except Exception as e:
+            messagebox.showerror("Error", f"Error saving internet search results: {e}")
+
     def load_all_settings(self):
         try:
             with open('claude_app_settings.json', 'r') as f:
@@ -111,10 +126,10 @@ class FileHandler:
             settings['instructions'] = []
         
         try:
-            with open('internet_sources.json', 'r') as f:
-                settings['internet_sources'] = json.load(f)
+            with open('internet_search_results.json', 'r') as f:
+                settings['internet_search_results'] = json.load(f)
         except FileNotFoundError:
-            settings['internet_sources'] = []
+            settings['internet_search_results'] = []
         
         return settings
 
@@ -141,7 +156,7 @@ class FileHandler:
         try:
             with open('claude_app_settings.json', 'w') as f:
                 json.dump(settings, f)
-            self.save_internet_sources(parent)
+            self.save_internet_search_results(parent)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving settings: {e}")
 

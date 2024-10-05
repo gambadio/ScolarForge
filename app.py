@@ -35,6 +35,7 @@ class ClaudeApp(tk.Tk):
         self.scripts = []
         self.instructions = []
         self.internet_sources = []
+        self.internet_search_results = []
         self.custom_prompts = load_default_prompts()
         self.system_prompt = self.custom_prompts["default_system_prompt"]
 
@@ -198,6 +199,7 @@ class ClaudeApp(tk.Tk):
             scripts=self.file_handler.format_scripts(self.scripts),
             instructions=self.file_handler.format_instructions(self.instructions),
             internet=self.file_handler.format_internet_sources(self.internet_sources),
+            internet_search=self.file_handler.format_internet_search_results(self.internet_search_results),
             first_name=self.first_name,
             last_name=self.last_name,
             date=self.date

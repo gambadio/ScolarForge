@@ -1,3 +1,3 @@
 {
-  "raw_response": "[\n    {\n        \"search_term\": \"artificial intelligence in healthcare diagnosis\",\n        \"goal\": \"Find information on how AI is being used to assist with medical diagnoses\"\n    },\n    {\n        \"search_term\": \"medical liability artificial intelligence\",\n        \"goal\": \"Research legal and ethical issues around AI use in medicine and liability concerns\"\n    }\n]"
+  "raw_response": "[\n    {\n        \"search_term\": \"artificial intelligence applications in healthcare\",\n        \"goal\": \"To find recent research and examples of how AI is being used in medical diagnosis, treatment, and healthcare delivery\"\n    },\n    {\n        \"search_term\": \"medical liability AI decision support\",\n        \"goal\": \"To explore legal and ethical considerations around medical liability when AI systems are used to assist clinical decision making\"\n    }\n]"
 }

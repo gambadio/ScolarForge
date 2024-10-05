@@ -15,6 +15,8 @@ def load_default_prompts():
             "{scripts}\n\n"
             "The internet sources are provided in the following format:\n\n"
             "{internet}\n\n"
+            "The internet search results are provided in the following format:\n\n"
+            "{internet_search}\n\n"
             "Please output the paper in Markdown format with clear markers for headings and sections. "
             "Use '#' for main headings, '##' for subheadings, and '###' for sub-subheadings. "
             "Use **bold** and *italic* text where appropriate. Include bullet points and numbered lists if necessary. "

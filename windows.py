@@ -65,29 +65,29 @@ class AutomaticInternetSearchWindow(BaseWindow):
 
         results = self.internet_search.perform_internet_search(search_terms)
 
-        self.parent.internet_sources = results
+        self.parent.internet_search_results = results
         self.progress_var.set("Search completed.")
         self.run_button.config(state=tk.NORMAL)
         self.update_listbox()
         self.parent.update_system_prompt()
-        self.parent.file_handler.save_internet_sources(self.parent)
+        self.parent.file_handler.save_internet_search_results(self.parent)  # Update this line
 
     def view_selected(self):
         selection = self.search_listbox.curselection()
         if selection:
-            source = self.parent.internet_sources[selection[0]]
+            source = self.parent.internet_search_results[selection[0]]  # Update this line
             ViewSourceWindow(self, source)
 
     def delete_selected(self):
         selection = self.search_listbox.curselection()
         if selection:
-            del self.parent.internet_sources[selection[0]]
+            del self.parent.internet_search_results[selection[0]]  # Update this line
             self.update_listbox()
-            self.parent.file_handler.save_internet_sources(self.parent)
+            self.parent.file_handler.save_internet_search_results(self.parent)  # Update this line
 
     def update_listbox(self):
         self.search_listbox.delete(0, tk.END)
-        for source in self.parent.internet_sources:
+        for source in self.parent.internet_search_results:  # Update this line
             search_term = source.get('search_term', 'N/A')
             date_retrieved = source.get('date_retrieved', 'N/A')
             title = source.get('title', 'N/A')
