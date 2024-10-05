@@ -1,8 +1,8 @@
 # internet_search.py
 
 import json
+import os
 import re
-import logging
 import requests
 from typing import List, Dict
 from datetime import datetime
@@ -11,7 +11,7 @@ class InternetSearch:
     def __init__(self, claude_api_key: str, perplexity_api_key: str):
         self.claude_api_key = claude_api_key
         self.perplexity_api_key = perplexity_api_key
-
+        self.json_file = 'internetsearch_results.json'
     def generate_search_terms(self, instructions: List[str], scripts: List[str]) -> List[Dict]:
         claude_prompt = self._create_claude_prompt(instructions, scripts)
         search_terms_raw = self._call_claude_api(claude_prompt)
@@ -40,7 +40,37 @@ class InternetSearch:
         for term in search_terms:
             sonar_prompt = self._create_sonar_prompt(term)
             result = self._call_sonar_api(sonar_prompt)
-            results.append(result)
+            
+            # Format the result
+            formatted_result = {
+                'title': f"{term['search_term']} - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                'url': result.get('url', 'Unknown URL'),
+                'author': result.get('author', 'Unknown Author'),
+                'content': result.get('content', '')
+            }
+            
+            results.append(formatted_result)
+
+        # Load existing data
+        existing_data = self._load_existing_data()
+
+        # Add new results
+        existing_data.extend(results)
+
+        # Save updated data
+        self._save_data(existing_data)
+
+        return results
+
+    def _load_existing_data(self):
+        if os.path.exists(self.json_file):
+            with open(self.json_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+
+    def _save_data(self, data):
+        with open(self.json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
         return results
 
     def _create_claude_prompt(self, instructions: List[str], scripts: List[str]) -> str:
@@ -71,10 +101,12 @@ class InternetSearch:
 
         Format your findings as JSON with the following structure:
         {{
+            "title": "Name of finding",
             "author": "Name of the author or website",
             "date_retrieved": "{datetime.now().strftime('%Y-%m-%d')}",
-            "content": "A summary of the relevant information found"
+            "content": "Everything you find in this source"
         }}
+        You don't write anything else than the JSON, no explanation or introduction tex.
         """
 
     def _call_claude_api(self, prompt: str) -> str:
@@ -129,3 +161,13 @@ class InternetSearch:
                 }
         else:
             raise Exception(f"Sonar API Error: {response.status_code} - {response.text}")
+
+    def _load_existing_data(self):
+        if os.path.exists(self.json_file):
+            with open(self.json_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+
+    def _save_data(self, data):
+        with open(self.json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)

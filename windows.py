@@ -61,12 +61,11 @@ class AutomaticInternetSearchWindow(BaseWindow):
         for i, term in enumerate(search_terms, 1):
             self.progress_var.set(f"Searching term {i} of {len(search_terms)}: {term['search_term']}")
             self.update_idletasks()
-            result = self.internet_search.perform_internet_search([term])[0]
-            self.parent.internet_sources.append(result)
-            self.update_listbox()
+            self.internet_search.perform_internet_search([term])
 
         self.progress_var.set("Search completed.")
         self.run_button.config(state=tk.NORMAL)
+        self.update_listbox()
         self.parent.update_system_prompt()
         self.parent.file_handler.save_internet_sources(self.parent)
 
@@ -85,8 +84,9 @@ class AutomaticInternetSearchWindow(BaseWindow):
 
     def update_listbox(self):
         self.search_listbox.delete(0, tk.END)
-        for source in self.parent.internet_sources:
-            self.search_listbox.insert(tk.END, f"{source['author']} - {source['date_retrieved']}")
+        sources = self.internet_search._load_existing_data()
+        for source in sources:
+            self.search_listbox.insert(tk.END, source['title'])
 
     def on_close(self):
         self.parent.update_system_prompt()
