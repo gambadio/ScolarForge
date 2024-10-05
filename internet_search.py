@@ -12,7 +12,7 @@ class InternetSearch:
     def __init__(self, claude_api_key: str, perplexity_api_key: str):
         self.claude_api_key = claude_api_key
         self.perplexity_api_key = perplexity_api_key
-        self.json_file = 'internetsearch_results.json'
+        self.json_file = 'internet_search_results.json'
 
     def generate_search_terms(self, instructions: List[str], scripts: List[str]) -> List[Dict]:
         claude_prompt = self._create_claude_prompt(instructions, scripts)
