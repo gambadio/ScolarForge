@@ -1,34 +1,34 @@
 [
   {
-    "title": "Artificial Intelligence in Healthcare",
-    "author": "Wikipedia",
+    "title": "The potential for artificial intelligence in healthcare",
+    "author": "NCBI",
     "date_retrieved": "2024-10-05",
-    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare",
-    "content": "AI can assist clinicians with its data processing capabilities to save time and improve accuracy. Through the use of machine learning, artificial intelligence can be able to substantially aid doctors in patient diagnosis through the analysis of mass electronic health records (EHRs). AI can help early prediction, for example, of Alzheimer's disease and dementias, by looking through large numbers of similar cases and possible treatments.",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6616181/",
+    "content": "AI is used for repetitive tasks like prior authorisation, updating patient records or billing. AI applications involve diagnosis and treatment recommendations, patient engagement and adherence, and administrative activities. AI can perform healthcare tasks as well or better than humans, but implementation factors will prevent large-scale automation of healthcare professional jobs for a considerable period.",
     "search_term": "artificial intelligence applications in healthcare"
   },
   {
-    "title": "AI in Healthcare: Examples, Use Cases & Benefits",
-    "author": "Acropolium",
+    "title": "AI in healthcare - 10 promising interventions",
+    "author": "NIHR Evidence",
     "date_retrieved": "2024-10-05",
-    "url": "https://acropolium.com/blog/ai-in-healthcare-examples-use-cases-and-benefits/",
-    "content": "AI algorithms can analyze large datasets of medical records, images, and diagnostic tests to assist medical clinics in more accurate and timely diagnosis. This can lead to preventive disease detection and improved treatment outcomes. AI enables personalized treatment plans by analyzing patient data, including medical history, genetics, and lifestyle factors.",
+    "url": "https://evidence.nihr.ac.uk/collection/artificial-intelligence-10-promising-interventions-for-healthcare/",
+    "content": "AI can help doctors detect heart disease, diagnose lung cancer more accurately, predict the progression of disease, personalise cancer and surgical treatment, and reduce pressure on A&E. AI applications in healthcare have the potential to bring benefits to patients, professionals and the health and social care system.",
+    "search_term": "artificial intelligence applications in healthcare"
+  },
+  {
+    "title": "Artificial intelligence in healthcare",
+    "author": "Wikipedia",
+    "date_retrieved": "2024-10-05",
+    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare",
+    "content": "AI can improve predicting, diagnosing and treating diseases. AI can assist clinicians with data processing capabilities to save time and improve accuracy. AI applications include disease diagnosis, telemedicine, cardiovascular medicine, obstetrics and gynaecology, and infectious diseases.",
     "search_term": "artificial intelligence applications in healthcare"
   },
   {
     "title": "How is AI being Used in the Healthcare Industry",
-    "author": "Lapu",
+    "author": "LAPU",
     "date_retrieved": "2024-10-05",
     "url": "https://www.lapu.edu/ai-health-care-industry/",
-    "content": "AI is primarily utilized to increase speed and accuracy in the healthcare realm. Some of the current uses of AI in this field include diagnosing patients, transcribing medical documents, drug discovery and development, and administrative efficiency.",
-    "search_term": "artificial intelligence applications in healthcare"
-  },
-  {
-    "title": "The Potential for Artificial Intelligence in Healthcare",
-    "author": "NCBI",
-    "date_retrieved": "2024-10-05",
-    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6616181/",
-    "content": "AI is used for repetitive tasks like prior authorization, updating patient records, or billing. When combined with other technologies like machine learning, AI can perform healthcare tasks as well or better than humans. AI applications involve diagnosis and treatment recommendations, patient engagement and adherence, and administrative activities.",
+    "content": "AI is used to increase speed and accuracy in healthcare. AI applications include diagnosing patients, transcribing medical documents, drug discovery and development, and administrative efficiency. AI has the potential to improve patient outcomes, increase safety, reduce human error, and reduce costs associated with healthcare.",
     "search_term": "artificial intelligence applications in healthcare"
   },
   {
@@ -36,47 +36,47 @@
     "author": "Empeek",
     "date_retrieved": "2024-10-05",
     "url": "https://empeek.com/insights/top-ai-applications-in-healthcare/",
-    "content": "AI provides physicians with data-driven insights to diagnose patients, plan treatments, and manage care. AI healthcare apps support radiologists with decision-making and give them more time to interact with patients. AI-based devices can detect irregularities, diagnose heart problems, and notify doctors about potential risks early on.",
+    "content": "AI provides physicians with data-driven insights to diagnose patients, plan treatments, and manage care. AI applications include X-ray image analysis, home-care services, quick brain scanning, heart monitoring, diagnostic AI, and personalized medicine.",
     "search_term": "artificial intelligence applications in healthcare"
   },
   {
-    "title": "Who pays when AI steers your doctor wrong?",
-    "author": "POLITICO",
+    "title": "Artificial intelligence and medical professional liability: 3 Questions for decision-makers",
+    "author": "Richard F. Cahill, JD",
     "date_retrieved": "2024-10-05",
-    "url": "https://www.politico.com/news/2024/03/24/who-pays-when-your-doctors-ai-goes-rogue-00148447",
-    "content": "The integration of artificial intelligence (AI) in the medical field has reignited discussions surrounding reforms in medical malpractice, but with a unique perspective. Physicians leveraging novel AI tools to aid in diagnosing and treating patients are seeking clarity on a crucial issue: accountability in case AI errors occur. The American Medical Association emphasizes the necessity for doctors to have faith in AI systems while being shielded from legal liabilities to enhance patient care.",
-    "search_term": "medical negligence liability for AI errors"
+    "url": "https://www.physicianspractice.com/view/artificial-intelligence-and-medical-professional-liability-3-questions-for-decision-makers",
+    "content": "AI-powered clinical decision support tools may flag certain patterns for clinician attention, but we still need and want clinicians to investigate and validate AI recommendations. Determining responsibility—and liability—while the developers of AI-based applications charge ahead, clinicians and healthcare institutions must temper their optimism with caution—and with questions regarding who will be responsible when a patient is harmed. How can medical professionals and organizations take steps to protect patient safety? How can they shield themselves from responsibility for aspects of healthcare technology that belong with developers, not doctors?",
+    "search_term": "medical liability AI decision support"
   },
   {
-    "title": "Artificial Intelligence and Liability in Medicine: Balancing Safety and Innovation",
-    "author": "NCBI",
+    "title": "AI and professional liability assessment in healthcare. A revolution in medical-legal issues",
+    "author": "Frontiers in Medicine",
     "date_retrieved": "2024-10-05",
-    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8452365/",
-    "content": "Physicians, health systems, and algorithm designers are subject to different, overlapping theories of liability for AI/ML systems. Broadly, physicians and health systems may be liable under malpractice and other negligence theories but are unlikely to be subject to products liability. Conversely, algorithm designers may be subject to products liability but are not likely to be liable under negligence theories.",
-    "search_term": "medical negligence liability for AI errors"
-  },
-  {
-    "title": "Malfunction, Malpractice?: Who Is Liable When AI Injures a Patient?",
-    "author": "Petrie-Flom Center for Health Law Policy, Biotechnology, and Bioethics at Harvard Law School",
-    "date_retrieved": "2024-10-05",
-    "url": "https://petrieflom.law.harvard.edu/podcast/episode/malfunction-malpractice",
-    "content": "This episode explores who is liable when AI injures a patient. Is it the hospital? The developer of the AI? The doctor on the scene? And what legal recourse do patients have? Experts discuss the need for a comprehensive approach to address the intricate interplay between technology, medical practice, and legal implications.",
-    "search_term": "medical negligence liability for AI errors"
+    "url": "https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2023.1337335/full",
+    "content": "The adoption of advanced artificial intelligence (AI) systems in healthcare is transforming the healthcare-delivery landscape. Artificial intelligence may enhance patient safety and improve healthcare outcomes, but it presents notable ethical and legal dilemmas. Moreover, as AI streamlines the analysis of the multitude of factors relevant to malpractice claims, including informed consent, adherence to standards of care, and causation, the evaluation of professional liability might also benefit from its use.",
+    "search_term": "medical liability AI decision support"
   },
   {
     "title": "Civil liability for the actions of autonomous AI in healthcare",
     "author": "Nature",
     "date_retrieved": "2024-10-05",
     "url": "https://www.nature.com/articles/s41599-024-02806-y",
-    "content": "This paper investigates the potential legal problems that might arise if AI technology evolves or is commonly used in clinical practice. It examines whether traditional doctrines of liability can adequately address the liability for the injuries stemming from acts of autonomous robots. The study identifies several models of civil liability that could be applicable to AI-related harm, including strict liability and negligence.",
-    "search_term": "medical negligence liability for AI errors"
+    "content": "The use of AI-enabled medical robots in healthcare settings poses a host of legal and ethical questions, especially regarding the attribution of liability for the injuries and deaths caused by such AI-driven devices. After reviewing the current literature and relevant legislation on this matter, the following models of civil liability have been identified as potentially applicable to AI-related harm.",
+    "search_term": "medical liability AI decision support"
   },
   {
-    "title": "Can AI Be Held Liable for Medical Malpractice?",
-    "author": "The Eisen Law Firm",
+    "title": "Artificial Intelligence and Liability in Medicine: Balancing Safety and Innovation",
+    "author": "PMC",
     "date_retrieved": "2024-10-05",
-    "url": "https://www.malpracticeohio.com/blog/can-artificial-intelligence-be-held-liable-for-medical-malpractice.html",
-    "content": "AI technology is not a licensed medical professional or even a person who can act negligently. However, this does not mean there is no legal recourse for patients who suffer harm due to AI mistakes. AI technology is viewed as a product, not a person. When a product malfunctions and causes injuries, victims can hold the product manufacturer liable for their losses by filing a product liability claim.",
-    "search_term": "medical negligence liability for AI errors"
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8452365/",
+    "content": "We examine the larger ecosystem of AI/ML liability and its role in ensuring both safe implementation and innovation in clinical care. Several policy options could ensure a more balanced liability system, including altering the standard of care, insurance, indemnification, special/no‐fault adjudication systems, and regulation.",
+    "search_term": "medical liability AI decision support"
+  },
+  {
+    "title": "Defining medical liability when artificial intelligence is applied on diagnostic algorithms",
+    "author": "PMC",
+    "date_retrieved": "2024-10-05",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10711067/",
+    "content": "The application of AI and diagnostic algorithm moreover raises questions about the risks of using unrepresentative populations during the development and about the completeness of information given to the patient. Concerns about the impact on the fiduciary relationship between physician and patient and on the subject of empathy have also been raised.",
+    "search_term": "medical liability AI decision support"
   }
 ]
