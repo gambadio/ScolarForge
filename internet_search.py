@@ -2,16 +2,18 @@
 
 import json
 import os
-import re
-import requests
-from typing import List, Dict
 from datetime import datetime
+from typing import List, Dict
+import requests
+import re
+import tempfile
 
 class InternetSearch:
     def __init__(self, claude_api_key: str, perplexity_api_key: str):
         self.claude_api_key = claude_api_key
         self.perplexity_api_key = perplexity_api_key
         self.json_file = 'internetsearch_results.json'
+
     def generate_search_terms(self, instructions: List[str], scripts: List[str]) -> List[Dict]:
         claude_prompt = self._create_claude_prompt(instructions, scripts)
         search_terms_raw = self._call_claude_api(claude_prompt)
@@ -27,55 +29,80 @@ class InternetSearch:
         else:
             json_str = search_terms_raw  # If no JSON-like structure found, use the whole response
         
-        
         try:
             return json.loads(json_str)
         except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse JSON: {e}")
-            logging.error(f"Raw content: {search_terms_raw}")
+            print(f"Failed to parse JSON: {e}")
+            print(f"Raw content: {search_terms_raw}")
             return []  # Return an empty list if parsing fails
 
     def perform_internet_search(self, search_terms: List[Dict]) -> List[Dict]:
-        results = []
+        perplexity_results = []
         for term in search_terms:
             sonar_prompt = self._create_sonar_prompt(term)
             result = self._call_sonar_api(sonar_prompt)
-            
-            # Format the result
-            formatted_result = {
-                'title': f"{term['search_term']} - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-                'url': result.get('url', 'Unknown URL'),
-                'author': result.get('author', 'Unknown Author'),
-                'content': result.get('content', '')
-            }
-            
-            results.append(formatted_result)
+            perplexity_results.append(result)
 
-        # Load existing data
-        existing_data = self._load_existing_data()
+        # Process Perplexity results using Claude
+        final_results = self._process_perplexity_results(perplexity_results)
 
-        # Add new results
-        existing_data.extend(results)
+        # Save the final results
+        self._save_data(final_results)
 
-        # Save updated data
-        self._save_data(existing_data)
+        return final_results
 
-        return results
+    def _process_perplexity_results(self, perplexity_results: List[str]) -> List[Dict]:
+        # Create temporary files for Perplexity results
+        temp_files = []
+        for i, result in enumerate(perplexity_results):
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as temp:
+                json.dump(result, temp)
+                temp_files.append(temp.name)
 
-    def _load_existing_data(self):
-        if os.path.exists(self.json_file):
-            with open(self.json_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return []
+        # Create Claude prompt to process Perplexity results
+        claude_prompt = self._create_claude_processing_prompt(temp_files)
+        
+        # Call Claude API to process results
+        processed_results = self._call_claude_api(claude_prompt)
 
-    def _save_data(self, data):
-        with open(self.json_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        return results
+        # Clean up temporary files
+        for temp_file in temp_files:
+            os.unlink(temp_file)
+
+        # Parse the processed results
+        try:
+            return json.loads(processed_results)
+        except json.JSONDecodeError as e:
+            print(f"Failed to parse processed results: {e}")
+            print(f"Raw content: {processed_results}")
+            return []
+
+    def _create_claude_processing_prompt(self, temp_files: List[str]) -> str:
+        prompt = "You will write one clean JSON based on the following text files:\n\n"
+        for i, temp_file in enumerate(temp_files):
+            with open(temp_file, 'r') as f:
+                content = f.read()
+            prompt += f"File {i+1}:\n{content}\n\n"
+        
+        prompt += """
+        Combine the information from these files into a single JSON array. Each item in the array should have the following structure:
+        {
+            "title": "Name of finding",
+            "author": "Name of the author or website",
+            "date_retrieved": "YYYY-MM-DD",
+            "url": "URL of the source",
+            "content": "Everything found in this source",
+            "search_term": "The search term used to find this information"
+        }
+        
+        Ensure that the output is a valid JSON array. Do not include any explanatory text before or after the JSON.
+        If the URL is not available, use "unknown" as the value.
+        """
+        return prompt
 
     def _create_claude_prompt(self, instructions: List[str], scripts: List[str]) -> str:
         return f"""
-        Based on the following instructions and scripts, create a list of 5 possible search terms for internet research.
+        Based on the following instructions and scripts, create a list of 2 possible search terms for internet research.
         Format the output as a JSON list of dictionaries, each containing 'search_term' and 'goal' keys. Do not include any explanatory text before or after the JSON. I REPEAT DO NOT WRITE ANYTHING ELSE THAN THE OUTPUT. 
 
         Instructions:
@@ -104,9 +131,12 @@ class InternetSearch:
             "title": "Name of finding",
             "author": "Name of the author or website",
             "date_retrieved": "{datetime.now().strftime('%Y-%m-%d')}",
-            "content": "Everything you find in this source"
+            "url": "URL of the source",
+            "content": "Everything you find in this source",
+            "search_term": "{term['search_term']}"
         }}
-        You don't write anything else than the JSON, no explanation or introduction tex.
+        You don't write anything else than the JSON, no explanation or introduction text.
+        Ensure to include a valid URL for each source. If you don't know the url, just write "unkown". 
         """
 
     def _call_claude_api(self, prompt: str) -> str:
@@ -149,24 +179,9 @@ class InternetSearch:
         
         if response.status_code == 200:
             result = response.json()
-            try:
-                content = result['choices'][0]['message']['content']
-                return json.loads(content)
-            except json.JSONDecodeError:
-                # If the content is not valid JSON, return it as is
-                return {
-                    "author": "Unknown",
-                    "date_retrieved": datetime.now().strftime("%Y-%m-%d"),
-                    "content": content
-                }
+            return result['choices'][0]['message']['content']
         else:
             raise Exception(f"Sonar API Error: {response.status_code} - {response.text}")
-
-    def _load_existing_data(self):
-        if os.path.exists(self.json_file):
-            with open(self.json_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return []
 
     def _save_data(self, data):
         with open(self.json_file, 'w', encoding='utf-8') as f:

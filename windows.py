@@ -17,6 +17,8 @@ class BaseWindow(tk.Toplevel):
     def create_widgets(self):
         raise NotImplementedError
     
+# windows.py (update only the AutomaticInternetSearchWindow class)
+
 class AutomaticInternetSearchWindow(BaseWindow):
     def __init__(self, parent):
         super().__init__(parent, "Automatic Internet Search")
@@ -58,11 +60,12 @@ class AutomaticInternetSearchWindow(BaseWindow):
             self.run_button.config(state=tk.NORMAL)
             return
 
-        for i, term in enumerate(search_terms, 1):
-            self.progress_var.set(f"Searching term {i} of {len(search_terms)}: {term['search_term']}")
-            self.update_idletasks()
-            self.internet_search.perform_internet_search([term])
+        self.progress_var.set("Performing internet search...")
+        self.update_idletasks()
 
+        results = self.internet_search.perform_internet_search(search_terms)
+
+        self.parent.internet_sources = results
         self.progress_var.set("Search completed.")
         self.run_button.config(state=tk.NORMAL)
         self.update_listbox()
@@ -84,35 +87,57 @@ class AutomaticInternetSearchWindow(BaseWindow):
 
     def update_listbox(self):
         self.search_listbox.delete(0, tk.END)
-        sources = self.internet_search._load_existing_data()
-        for source in sources:
-            self.search_listbox.insert(tk.END, source['title'])
+        for source in self.parent.internet_sources:
+            search_term = source.get('search_term', 'N/A')
+            date_retrieved = source.get('date_retrieved', 'N/A')
+            title = source.get('title', 'N/A')
+            url = source.get('url', 'unknown')
+            self.search_listbox.insert(tk.END, f"{search_term} - {date_retrieved} - {title} - {url}")
 
     def on_close(self):
         self.parent.update_system_prompt()
         self.parent.save_all_settings()
         self.destroy()
 
+
 class ViewSourceWindow(BaseWindow):
     def __init__(self, parent, source):
-        super().__init__(parent, f"Source: {source['author']}")
-        self.source = source
+        self.source = source  # Set the source attribute before calling super().__init__
+        super().__init__(parent, f"Source: {source.get('title', 'Unknown')}")
+        self.geometry("800x600")
 
     def create_widgets(self):
-        ttk.Label(self, text=f"Author: {self.source['author']}").pack(pady=5)
-        ttk.Label(self, text=f"Date Retrieved: {self.source['date_retrieved']}").pack(pady=5)
+        main_frame = ttk.Frame(self, padding="10")
+        main_frame.pack(fill=tk.BOTH, expand=True)
 
-        content_frame = ttk.Frame(self)
-        content_frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+        # Create a canvas with scrollbar
+        canvas = tk.Canvas(main_frame)
+        scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
 
-        content_text = tk.Text(content_frame, wrap=tk.WORD, width=60, height=20)
-        content_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        content_text.insert(tk.END, self.source['content'])
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # Add source information
+        for key, value in self.source.items():
+            if key != "content":
+                ttk.Label(scrollable_frame, text=f"{key.capitalize()}:", font=("TkDefaultFont", 10, "bold")).pack(anchor="w", pady=(10, 0))
+                ttk.Label(scrollable_frame, text=str(value), wraplength=750).pack(anchor="w", pady=(0, 5))
+
+        # Add content
+        ttk.Label(scrollable_frame, text="Content:", font=("TkDefaultFont", 10, "bold")).pack(anchor="w", pady=(10, 0))
+        content_text = tk.Text(scrollable_frame, wrap=tk.WORD, width=90, height=20)
+        content_text.pack(pady=(0, 10))
+        content_text.insert(tk.END, self.source.get('content', 'No content available'))
         content_text.config(state=tk.DISABLED)
 
-        scrollbar = ttk.Scrollbar(content_frame, orient=tk.VERTICAL, command=content_text.yview)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        content_text.config(yscrollcommand=scrollbar.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
 
         ttk.Button(self, text="Close", command=self.destroy).pack(pady=10)
 
