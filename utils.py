@@ -7,6 +7,7 @@ from tkinter import filedialog, messagebox
 import requests
 from docx import Document
 from docx.shared import Pt, Inches, Cm
+from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -251,10 +252,10 @@ class DocumentHandler:
         section.bottom_margin = Cm(parent.margin_bottom)
 
         styles = document.styles
-        self.create_custom_style(styles, 'TitleStyle', parent.font_size_heading1, True)
-        self.create_custom_style(styles, 'Heading1Custom', parent.font_size_heading1, True, base_style='Heading 1')
-        self.create_custom_style(styles, 'Heading2Custom', parent.font_size_heading2, True, base_style='Heading 2')
-        self.create_custom_style(styles, 'Heading3Custom', parent.font_size_heading3, True, base_style='Heading 3')
+        self.create_custom_style(styles, 'TitleStyle', parent.font_size_heading1, True, parent)
+        self.create_custom_style(styles, 'Heading1Custom', parent.font_size_heading1, True, parent, base_style='Heading 1')
+        self.create_custom_style(styles, 'Heading2Custom', parent.font_size_heading2, True, parent, base_style='Heading 2')
+        self.create_custom_style(styles, 'Heading3Custom', parent.font_size_heading3, True, parent, base_style='Heading 3')
 
         style_normal = styles['Normal']
         style_normal.font.size = Pt(parent.font_size_normal)
@@ -264,13 +265,13 @@ class DocumentHandler:
         for style in [style_normal, styles['TitleStyle'], styles['Heading1Custom'], styles['Heading2Custom'], styles['Heading3Custom']]:
             style.paragraph_format.line_spacing = Pt(line_spacing * 12)
 
-    def create_custom_style(self, styles, name, font_size, bold, base_style=None):
-        style = styles.add_style(name, styles.WD_STYLE_TYPE.PARAGRAPH)
+    def create_custom_style(self, styles, name, font_size, bold, parent, base_style=None):
+        style = styles.add_style(name, WD_STYLE_TYPE.PARAGRAPH)
         if base_style:
             style.base_style = styles[base_style]
         style.font.size = Pt(font_size)
         style.font.bold = bold
-        style.font.name = self.parent.font_name
+        style.font.name = parent.font_name
 
     def process_content(self, document, content, parent):
         paragraphs = content.strip().split('\n')
