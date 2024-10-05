@@ -84,12 +84,33 @@ class FileHandler:
         except Exception as e:
             messagebox.showerror("Error", f"Error saving internet sources: {e}")
 
+    def save_internet_search_results(self, parent):
+        try:
+            with open('internet_search_results.json', 'w') as f:
+                json.dump(parent.internet_search_results, f, indent=2)
+        except Exception as e:
+            messagebox.showerror("Error", f"Error saving internet search results: {e}")
+
     def save_texts(self, texts, filename):
         try:
             with open(filename, 'w') as f:
                 json.dump(texts, f, indent=2)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving texts: {e}")
+
+    def format_scripts(self, scripts):
+        return "\n\n".join([f"Script {i+1} ({name}):\n{content}\n!!!this is the next document!!!" for i, (name, content) in enumerate(scripts)])
+
+    def format_instructions(self, instructions):
+        return "\n\n".join([f"Instruction {i+1} ({name}):\n{content}\n!!!this is the next document!!!" for i, (name, content) in enumerate(instructions)])
+
+    def format_internet_sources(self, internet_sources):
+        formatted_sources = []
+        for i, source in enumerate(internet_sources):
+            formatted_sources.append(
+                f"Internet Source {i+1} (URL: {source['url']}, Author: {source['author']}, Date: {source['date']}):\n{source['content']}\n!!!this is the next document!!!"
+            )
+        return "\n\n".join(formatted_sources)
 
     def format_internet_search_results(self, internet_search_results):
         formatted_results = []
@@ -98,13 +119,6 @@ class FileHandler:
                 f"Internet Search Result {i+1} (Title: {result.get('title', 'Unknown')}, URL: {result.get('url', 'unknown')}, Author: {result.get('author', 'Unknown')}, Date Retrieved: {result.get('date_retrieved', 'N/A')}):\n{result.get('content', 'No content available')}\n!!!this is the next document!!!"
             )
         return "\n\n".join(formatted_results)
-
-    def save_internet_search_results(self, parent):
-        try:
-            with open('internet_search_results.json', 'w') as f:
-                json.dump(parent.internet_search_results, f, indent=2)
-        except Exception as e:
-            messagebox.showerror("Error", f"Error saving internet search results: {e}")
 
     def load_all_settings(self):
         try:
@@ -126,6 +140,12 @@ class FileHandler:
             settings['instructions'] = []
         
         try:
+            with open('internet_sources.json', 'r') as f:
+                settings['internet_sources'] = json.load(f)
+        except FileNotFoundError:
+            settings['internet_sources'] = []
+        
+        try:
             with open('internet_search_results.json', 'r') as f:
                 settings['internet_search_results'] = json.load(f)
         except FileNotFoundError:
@@ -139,7 +159,7 @@ class FileHandler:
             'perplexity_api_key': parent.perplexity_api_key,
             'first_name': parent.first_name,
             'last_name': parent.last_name,
-            'date': parent.date,  # Add this line to save the date
+            'date': parent.date,
             'font_name': parent.font_name,
             'font_size_normal': parent.font_size_normal,
             'font_size_heading1': parent.font_size_heading1,
@@ -151,12 +171,15 @@ class FileHandler:
             'margin_left': parent.margin_left,
             'margin_right': parent.margin_right,
             'system_prompt': parent.system_prompt_text.get(1.0, tk.END).strip(),
-            'custom_prompts': parent.custom_prompts
+            'custom_prompts': parent.custom_prompts,
+            'scripts': parent.scripts,
+            'instructions': parent.instructions,
+            'internet_sources': parent.internet_sources,
+            'internet_search_results': parent.internet_search_results
         }
         try:
             with open('claude_app_settings.json', 'w') as f:
                 json.dump(settings, f)
-            self.save_internet_search_results(parent)
         except Exception as e:
             messagebox.showerror("Error", f"Error saving settings: {e}")
 
@@ -168,19 +191,7 @@ class FileHandler:
             parent.save_all_settings()
             messagebox.showinfo("Success", f"Prompt '{prompt_name}' saved successfully.")
 
-    def format_scripts(self, scripts):
-        return "\n\n".join([f"Script {i+1} ({name}):\n{content}\n!!!this is the next document!!!" for i, (name, content) in enumerate(scripts)])
 
-    def format_instructions(self, instructions):
-        return "\n\n".join([f"Instruction {i+1} ({name}):\n{content}\n!!!this is the next document!!!" for i, (name, content) in enumerate(instructions)])
-
-    def format_internet_sources(self, internet_sources):
-        formatted_sources = []
-        for i, source in enumerate(internet_sources):
-            formatted_sources.append(
-                f"Internet Source {i+1} (URL: {source['url']}, Author: {source['author']}, Date: {source['date']}):\n{source['content']}\n!!!this is the next document!!!"
-            )
-        return "\n\n".join(formatted_sources)
 
 class APIHandler:
         def send_request(self, parent):

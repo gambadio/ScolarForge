@@ -23,6 +23,7 @@ class AutomaticInternetSearchWindow(BaseWindow):
     def __init__(self, parent):
         super().__init__(parent, "Automatic Internet Search")
         self.internet_search = InternetSearch(self.parent.api_key, self.parent.perplexity_api_key)
+        self.update_listbox()
 
     def create_widgets(self):
         self.search_listbox = tk.Listbox(self, width=80, height=15)
@@ -38,6 +39,8 @@ class AutomaticInternetSearchWindow(BaseWindow):
         self.run_button = ttk.Button(buttons_frame, text="Run Search", command=self.run_search)
         self.run_button.pack(side=tk.LEFT, padx=5)
         ttk.Button(buttons_frame, text="View Selected", command=self.view_selected).pack(side=tk.LEFT, padx=5)
+        ttk.Button(buttons_frame, text="Move Up", command=lambda: self.move_item(-1)).pack(side=tk.LEFT, padx=5)
+        ttk.Button(buttons_frame, text="Move Down", command=lambda: self.move_item(1)).pack(side=tk.LEFT, padx=5)
         ttk.Button(buttons_frame, text="Delete Selected", command=self.delete_selected).pack(side=tk.LEFT, padx=5)
         ttk.Button(buttons_frame, text="Close", command=self.on_close).pack(side=tk.LEFT, padx=5)
 
@@ -93,6 +96,17 @@ class AutomaticInternetSearchWindow(BaseWindow):
             title = source.get('title', 'N/A')
             url = source.get('url', 'unknown')
             self.search_listbox.insert(tk.END, f"{search_term} - {date_retrieved} - {title} - {url}")
+
+    def move_item(self, direction):
+        selection = self.search_listbox.curselection()
+        if selection:
+            index = selection[0]
+            if 0 <= index + direction < len(self.parent.internet_search_results):
+                self.parent.internet_search_results[index], self.parent.internet_search_results[index + direction] = \
+                    self.parent.internet_search_results[index + direction], self.parent.internet_search_results[index]
+                self.update_listbox()
+                self.search_listbox.select_set(index + direction)
+                self.parent.file_handler.save_internet_search_results(self.parent)
 
     def on_close(self):
         self.parent.update_system_prompt()
@@ -388,7 +402,7 @@ class InstructionsWindow(BaseWindow):
                     self.parent.instructions[index + direction], self.parent.instructions[index]
                 self.update_listbox()
                 self.instructions_listbox.select_set(index + direction)
-                self.parent.file_handler.save_instruction_texts(self.parent)  # Add this line
+                self.parent.file_handler.save_internet_search_results(self.parent)
 
     def delete_selected(self):
         selection = self.instructions_listbox.curselection()
@@ -410,6 +424,7 @@ class InstructionsWindow(BaseWindow):
 class InternetSourcesWindow(BaseWindow):
     def __init__(self, parent):
         super().__init__(parent, "Manage Internet Sources")
+        self.update_listbox()
 
     def create_widgets(self):
         self.internet_listbox = tk.Listbox(self, width=80, height=15)
@@ -429,8 +444,6 @@ class InternetSourcesWindow(BaseWindow):
         for text, command in buttons:
             ttk.Button(buttons_frame, text=text, command=command).pack(side=tk.LEFT, padx=5)
 
-        self.update_listbox()
-
     def add_link(self):
         AddLinkWindow(self)
 
@@ -449,13 +462,17 @@ class InternetSourcesWindow(BaseWindow):
                     self.parent.internet_sources[index + direction], self.parent.internet_sources[index]
                 self.update_listbox()
                 self.internet_listbox.select_set(index + direction)
-                self.parent.file_handler.save_internet_sources(self.parent)  # Add this line
+                self.parent.file_handler.save_internet_sources(self.parent)
 
     def delete_selected(self):
         selection = self.internet_listbox.curselection()
         if selection:
-            del self.parent.internet_sources[selection[0]]
-            self.update_listbox()
+            index = selection[0]
+            if 0 <= index + direction < len(self.parent.internet_sources):
+                self.parent.internet_sources[index], self.parent.internet_sources[index + direction] = \
+                    self.parent.internet_sources[index + direction], self.parent.internet_sources[index]
+                self.update_listbox()
+                self.internet_listbox.select_set(index + direction)
             self.parent.file_handler.save_internet_sources(self.parent)
 
     def update_listbox(self):

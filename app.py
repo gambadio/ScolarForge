@@ -32,9 +32,9 @@ class ClaudeApp(tk.Tk):
         self.margin_bottom = 2.0
         self.margin_left = 2.0
         self.margin_right = 2.0
+        self.internet_sources = []
         self.scripts = []
         self.instructions = []
-        self.internet_sources = []
         self.internet_search_results = []
         self.custom_prompts = load_default_prompts()
         self.system_prompt = self.custom_prompts["default_system_prompt"]
@@ -186,7 +186,7 @@ class ClaudeApp(tk.Tk):
     def load_settings(self):
         settings = self.file_handler.load_all_settings()
         for key, value in settings.items():
-            if key in ['scripts', 'instructions', 'internet_sources']:
+            if key in ['scripts', 'instructions', 'internet_sources', 'internet_search_results']:
                 setattr(self, key, value)
             else:
                 setattr(self, key, value)

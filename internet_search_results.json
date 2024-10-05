@@ -1,13 +1,5 @@
 [
   {
-    "title": "The potential for artificial intelligence in healthcare",
-    "author": "NCBI",
-    "date_retrieved": "2024-10-05",
-    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6616181/",
-    "content": "AI is used for repetitive tasks like prior authorisation, updating patient records or billing. AI applications involve diagnosis and treatment recommendations, patient engagement and adherence, and administrative activities. AI can perform healthcare tasks as well or better than humans, but implementation factors will prevent large-scale automation of healthcare professional jobs for a considerable period.",
-    "search_term": "artificial intelligence applications in healthcare"
-  },
-  {
     "title": "AI in healthcare - 10 promising interventions",
     "author": "NIHR Evidence",
     "date_retrieved": "2024-10-05",
@@ -21,6 +13,14 @@
     "date_retrieved": "2024-10-05",
     "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare",
     "content": "AI can improve predicting, diagnosing and treating diseases. AI can assist clinicians with data processing capabilities to save time and improve accuracy. AI applications include disease diagnosis, telemedicine, cardiovascular medicine, obstetrics and gynaecology, and infectious diseases.",
+    "search_term": "artificial intelligence applications in healthcare"
+  },
+  {
+    "title": "The potential for artificial intelligence in healthcare",
+    "author": "NCBI",
+    "date_retrieved": "2024-10-05",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6616181/",
+    "content": "AI is used for repetitive tasks like prior authorisation, updating patient records or billing. AI applications involve diagnosis and treatment recommendations, patient engagement and adherence, and administrative activities. AI can perform healthcare tasks as well or better than humans, but implementation factors will prevent large-scale automation of healthcare professional jobs for a considerable period.",
     "search_term": "artificial intelligence applications in healthcare"
   },
   {
