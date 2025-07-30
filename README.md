@@ -253,7 +253,12 @@ ScolarForge welcomes contributions to enhance academic writing capabilities:
 
 ## 📄 License
 
-This project is open source. Please check the repository for specific license terms.
+This project is licensed for **non-commercial use only**.
+
+**Personal Use**: Free to use, copy, and modify for private, educational, and non-commercial purposes.  
+**Commercial Use**: Prohibited without explicit written permission.
+
+For commercial licensing inquiries, please contact: **ricardo.kupper@adalala.com**
 
 ## 🌟 Acknowledgments
 
@@ -265,3 +270,5 @@ This project is open source. Please check the repository for specific license te
 ---
 
 *Empowering academic excellence through intelligent automation - where research meets artificial intelligence.*
+
+**© 2025 Ricardo Kupper** • Built for students and researchers pursuing academic excellence
