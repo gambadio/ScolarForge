@@ -1,0 +1,1 @@
+ScolarForge is an academic research and paper generation suite that automates university-level writing using dual AI integration (Claude & Perplexity). It streamlines research, citation management, formatting, and document export to help students and researchers produce high-quality academic papers efficiently.
